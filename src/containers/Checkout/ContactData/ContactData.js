@@ -82,8 +82,21 @@ class ContactData extends Component {
             });
     }
 
-    render() {
+    inputChangedHandler = (event, inputIdentifier) => {
+        //clone the object -> see immutable object
+        const updatedOrderForm = {
+            ...this.state.orderForm
+        };
+        //clone deeply
+        const updatedFormElement = {
+            ...updatedOrderForm[inputIdentifier]
+        };
+        updatedFormElement.value = event.target.value;
+        updatedOrderForm[inputIdentifier] = updatedFormElement;
+        this.setState({orderForm: updatedOrderForm});
+    }
 
+    render() {
         const formElementsArray = [];
         for (let key in this.state.orderForm) {
             formElementsArray.push({
@@ -99,7 +112,8 @@ class ContactData extends Component {
                         key={formElement.id}
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
-                        value={formElement.config.value} />
+                        value={formElement.config.value}
+                        changed={(event) => this.inputChangedHandler(event, formElement.id)} />
                 ))}
                 <Button
                     btnType='Success'
