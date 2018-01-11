@@ -26,15 +26,15 @@ class Checkout extends Component {
                 <Route
                     path={this.props.match.path + '/contact-data'}
                     component={ContactData} />
-            </div>
+            </div>;
         }
-        return { summary };
+        return summary;
     }
 }
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients
+        ings: state.burgerBuilder.ingredients
     }
 };
 
