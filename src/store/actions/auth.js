@@ -25,7 +25,7 @@ export const authFail = (error) => {
     };
 };
 
-export const auth = (email, password) => {
+export const auth = (email, password, isSignup) => {
     return dispatch => {
         dispatch(authStart());
         const authData = {
@@ -33,7 +33,11 @@ export const auth = (email, password) => {
             password: password,
             returnSecureToken: true
         };
-        axios.post(constants.FIREBASE_AUTH_URL, authData)
+        let url = constants.FIREBASE_AUTH_URL;
+        if (!isSignup) {
+            url = constants.FIREBASE_AUTH_WITH_VERIFY_PASSWORD;
+        }
+        axios.post(url, authData)
             .then(response => {
                 console.log(response);
                 dispatch(authSuccess(response.data));
