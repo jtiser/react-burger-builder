@@ -1,4 +1,7 @@
+import axios from 'axios';
+
 import * as actionTypes from './actionTypes';
+import * as constants from '../../const.js';
 
 export const authStart = () => {
     return {
@@ -25,5 +28,19 @@ export const authFail = (error) => {
 export const auth = (email, password) => {
     return dispatch => {
         dispatch(authStart());
+        const authData = {
+            email: email,
+            password: password,
+            returnSecureToken: true
+        };
+        axios.post(constants.FIREBASE_AUTH_URL, authData)
+            .then(response => {
+                console.log(response);
+                dispatch(authSuccess(response.data));
+            })
+            .catch(err => {
+                console.log(err);
+                dispatch(authFail(err));
+            });
     };
 };
